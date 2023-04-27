@@ -4,6 +4,7 @@ from typing import Any, Mapping, TypeVar, Union
 
 T = TypeVar('T')
 
+
 def safely_get_value(
     dct: Mapping[str, Any], key: str, default: Union[T, None] = None
 ) -> Union[Any, T]:
