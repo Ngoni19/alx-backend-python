@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
-
-"""Script -> Asynchronously generates random numbers"""
-
+"""Script -> Creates a generator"""
 import asyncio
 import random
-from typing import AsyncGenerator
+from typing import Generator
 
 
-async def generate_random_numbers() -> AsyncGenerator[float, None]:
-    """Method: Waits asynchronously for 1 sec each time,
-    then yields a random floating-point number between 0 & 10"""
-    for _ in range(10):
+async def async_generator() -> Generator[float, None, None]:
+    """Method : waits asynchronously for 1 sec each time
+    then yields a random floating-point number between 0 and 10"""
+    for _ in range(0, 10):
         await asyncio.sleep(1)
         yield random.uniform(0, 10)
-
