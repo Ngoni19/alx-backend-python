@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Script->Measures runtime of async_comprehension 
-    executed 4 times in parallel"""
+"""Script->Measures runtime of async_comprehension
+executed 4 times in parallel"""
 import time
 import asyncio
 async_comprehension = __import__('1-async_comprehension').async_comprehension
