@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Script -> Tests Module for Utils
+This script contains two test classes, TestAccessNestedMap and TestGetJson,
+which test the access_nested_map and get_json functions respectively.
 """
+
 import unittest
 from parameterized import parameterized
 from utils import access_nested_map, get_json
@@ -16,6 +19,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
     def test_access_nested_map(self, nested_map, path, expected):
+        """Test access_nested_map function with valid inputs"""
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([
@@ -23,6 +27,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": 1}, ("a", "b"))
     ])
     def test_access_nested_map_exception(self, nested_map, path):
+        """Test access_nested_map function with invalid inputs"""
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
 
@@ -36,6 +41,7 @@ class TestGetJson(unittest.TestCase):
         ("http://holberton.io", {"payload": False})
     ])
     def test_get_json(self, url, expected):
+        """Test get_json function with valid inputs"""
         with requests_mock.Mocker() as mock_requests:
             mock_response = expected
             mock_requests.get(url, json=mock_response)
