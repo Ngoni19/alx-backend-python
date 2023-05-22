@@ -1,25 +1,22 @@
 #!/usr/bin/env python3
-"""Script -> Tests Module for Utils
-This script contains two test classes, TestAccessNestedMap and TestGetJson,
-which test the access_nested_map and get_json functions respectively.
+"""Tests Module for Utils
 """
-
 import unittest
 from parameterized import parameterized
-from utils import access_nested_map, get_json
-import requests_mock
+ utils import access_nested_map, get_json
+from unittest.mock import patch, MagicMock
 
 
 class TestAccessNestedMap(unittest.TestCase):
-    """Tests the access_nested_map method of utils
-    """
+    """Test class for the access_nested_map function in utils module."""
+
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {'b': 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
-    def test_access_nested_map(self, nested_map, path, expected):
-        """Test access_nested_map function with valid inputs"""
+    def test_access_nested_map(self, nested_map, path,  expected):
+        """Test access_nested_map function with valid inputs."""
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([
@@ -27,24 +24,23 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": 1}, ("a", "b"))
     ])
     def test_access_nested_map_exception(self, nested_map, path):
-        """Test access_nested_map function with invalid inputs"""
+        """Test access_nested_map function with invalid inputs."""
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
 
 
 class TestGetJson(unittest.TestCase):
-    """Tests the get_json function of utils
-    """
+    """Test class for the get_json function in utils module."""
 
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False})
     ])
-    def test_get_json(self, url, expected):
-        """Test get_json function with valid inputs"""
-        with requests_mock.Mocker() as mock_requests:
-            mock_response = expected
-            mock_requests.get(url, json=mock_response)
+    @patch('utils.requests.get')
+    def test_get_json(self, url, expected, mock_requests):
+        """Test get_json function with valid inputs."""
+        mock_response = expected
 
-            self.assertEqual(get_json(url), mock_response)
-            mock_requests.get.assert_called_once_with(url)
+        mock_requests.return_value.json.return_value = mock_response
+        self.assertEqual(get_json(url), mock_response)
+        mock_requests.assert_called_with(url)
